@@ -3,5 +3,24 @@
     # The include keeps them visible to the server without editing this file by hand.
     include "registries/generated/manifest.hocon",
 
-    "music_nerd.hocon": true
+    "music_nerd.hocon": true,
+    "marina.hocon": true,
+    "basic/advanced_calculator.hocon": true,
+    "basic/book_recommender_multiple_llm_configs.hocon": true,
+    "basic/coding_assistant.hocon": true,
+    "basic/coffee_finder.hocon": true,
+    "basic/coffee_finder_advanced.hocon": true,
+    "basic/hello_world.hocon": true,
+    "basic/internal_communication_skill.hocon": true,
+    "basic/job_guessing_skill.hocon": true,
+    "basic/music_nerd.hocon": true,
+    "basic/music_nerd_llm_fallbacks.hocon": true,
+    "basic/music_nerd_local.hocon": true,
+    "basic/music_nerd_pro.hocon": true,
+    "basic/music_nerd_pro_local.hocon": true,
+    "basic/music_nerd_pro_sly.hocon": true,
+    "basic/music_nerd_pro_sly_local.hocon": true,
+    "basic/pii_middleware.hocon": true,
+    "basic/smart_home.hocon": true,
+    "basic/wolfram_mcp.hocon": true
 }

@@ -1,0 +1,88 @@
+
+{
+    include "config/llm_config.hocon",
+
+    "metadata": {
+        "description": "MARINA marine intelligence and safety decision support prototype using explicitly labelled synthetic data."
+        "tags": ["maritime", "safety", "multi-agent"]
+        "sample_queries": [
+            "Show simulated marine observations for a test coastal area.",
+            "Can you assess current marine conditions for a coastal location?"
+        ]
+    },
+
+    "tools": [
+        {
+            "name": "MarinaCoordinator",
+            "function": {
+                "description": """
+You are MARINA, a marine intelligence and safety decision-support assistant.
+Coordinate requests and delegate marine observation requests to the MarineDataAgent.
+Clearly distinguish simulated observations from real observations.
+Never claim that conditions are safe for navigation based on simulated data.
+If live data is unavailable, explicitly say that current conditions cannot be assessed.
+"""
+            },
+            "instructions": """
+You are the user-facing coordinator for MARINA.
+For marine observation requests, call MarineDataAgent.
+Summarize its result accurately, including the location, data status, source,
+observation timestamp, and limitations.
+Never describe synthetic data as real or infer current conditions from it.
+If the user asks whether it is safe to go to sea and verified real data is unavailable,
+state that this prototype cannot determine whether it is safe.
+""",
+            "tools": ["MarineDataAgent"]
+        },
+        {
+            "name": "MarineDataAgent",
+            "function": {
+                "description": "Requests marine observations for a specified location.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "The coastal location to query."
+                        },
+                        "use_sample_data": {
+                            "type": "boolean",
+                            "description": "Set true only when the user explicitly requests a simulated demonstration."
+                        }
+                    },
+                    "required": ["location"]
+                }
+            },
+            "instructions": """
+You are MARINA's marine data agent.
+Call MarineDataTool to obtain the result.
+Only request synthetic sample data when the user explicitly requests a simulation or demonstration.
+Do not claim to retrieve live conditions; live retrieval is not implemented.
+Return the tool's status, source, timestamp, observations, and limitations accurately.
+""",
+            "tools": [MarineDataTool]
+        },
+        {
+            "name": "MarineDataTool",
+            "function": {
+                "description": "Returns explicitly labelled simulated marine observations or an unavailable status.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "A coastal location label."
+                        },
+                        "use_sample_data": {
+                            "type": "boolean",
+                            "description": "Whether to return synthetic development observations."
+                        }
+                    },
+                    "required": ["location"]
+                }
+            },
+            "class": "marine_data_tool.MarineDataTool"
+        }
+    ]
+}
+
