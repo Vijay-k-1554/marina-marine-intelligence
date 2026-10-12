@@ -1,7 +1,7 @@
-[project]
+﻿[project]
 name = "marina-hackathon"
 version = "0.1.0"
-description = "Add your description here"
+description = "Multi-agent marine intelligence and safety decision-support prototype using Neuro-SAN Studio and public marine forecasts."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

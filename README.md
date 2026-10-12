@@ -13,29 +13,42 @@ MARINA is a multi-agent marine intelligence and safety decision-support prototyp
 
 ## Technology stack
 
-- Python
+- Python 3.14 (tested development environment; project metadata permits Python 3.11+)
 - Neuro-SAN / Neuro-SAN Studio
 - Groq-hosted language model (`openai/gpt-oss-120b`)
 - Open-Meteo Marine API
-- `uv` for Python environment and dependency management
+- `uv` for dependency management
 
 ## Setup
 
-1. Install Python and `uv`.
-2. Clone this repository and enter its directory.
-3. Install dependencies:
+Prerequisites: Python 3.11 or later and `uv`. The currently verified development environment uses Python 3.14.6.
+
+1. Clone the repository:
 
    ```powershell
-   uv sync
+   git clone https://github.com/Vijay-k-1554/marina-marine-intelligence.git
+   cd marina-marine-intelligence
    ```
 
-4. Create a local `.env` file containing your Groq API key:
+2. Install the locked dependencies:
+
+   ```powershell
+   uv sync --locked
+   ```
+
+3. Create your local environment file from the template:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+4. Open `.env` and replace the placeholder with your own Groq API key:
 
    ```text
-   GROQ_API_KEY=your_groq_api_key
+   GROQ_API_KEY=your_groq_api_key_here
    ```
 
-   Never commit `.env` or publish API keys.
+   Never commit `.env` or publish API keys. The `.env.example` file contains only a placeholder.
 
 ## Run the checks
 
@@ -45,7 +58,7 @@ uv run python evaluate_marina.py
 uv run python evaluate_live_forecast.py
 ```
 
-The live evaluation requires internet access and a reachable Open-Meteo API. It may fail temporarily if the service is unavailable.
+The first two scripts test tool behaviour and input handling. The live evaluation requires internet access and a reachable Open-Meteo API; it may fail temporarily if the service is unavailable.
 
 ## Run the agent
 
@@ -60,6 +73,11 @@ uv run ns chat marina --one-shot
 
 Ask the agent to assess marine conditions for a location. Live forecasts require valid latitude and longitude; do not assume that a place name alone is sufficient.
 
+## Project documents
+
+- `architecture.md` — components and data flow.
+- `summary.md` — project overview and evaluation results.
+
 ## Data integrity and safety
 
 - Synthetic observations are returned only when explicitly requested.
@@ -69,15 +87,12 @@ Ask the agent to assess marine conditions for a location. Live forecasts require
 - Local coastal conditions may differ from forecast values.
 - MARINA does not provide navigation clearance and must not be the sole basis for marine safety decisions.
 
-## Project documents
+## Evaluation results
 
-- `architecture.md` — components and data flow.
-- `summary.md` — project overview and evaluation results.
+The current development version passed:
 
-## Current evaluation results
+- Six marine-tool tests.
+- Seven deterministic evaluation checks.
+- Ten live-response metadata checks for the tested Open-Meteo response.
 
-- Six marine-tool tests passed.
-- Seven deterministic evaluation checks passed.
-- Ten live-response metadata checks passed for the tested Open-Meteo response.
-
-These checks validate software behaviour and response metadata, not the predictive accuracy of the marine forecast.
+These checks validate software behaviour and response metadata, not the predictive accuracy of marine forecasts.
